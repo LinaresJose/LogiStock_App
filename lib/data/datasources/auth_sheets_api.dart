@@ -45,7 +45,7 @@ class AuthSheetsApi {
     );
     final rows = response.values ?? [];
     for (int i = 0; i < rows.length; i++) {
-      if (rows[i].isNotEmpty && rows[i][0].toString() == userId) {
+      if (rows[i].isNotEmpty && rows[i][0].toString().trim().toLowerCase() == userId.trim().toLowerCase()) {
         return i + 2; // +2 porque el rango empieza en A2 (índice 0 = fila 2)
       }
     }
@@ -61,6 +61,7 @@ class AuthSheetsApi {
       AppConstants.spreadsheetId,
       AppConstants.usersRange,
       valueInputOption: 'USER_ENTERED',
+      insertDataOption: 'INSERT_ROWS',
     );
   }
 

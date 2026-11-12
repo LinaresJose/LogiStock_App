@@ -105,6 +105,7 @@ class GoogleSheetsApi {
       AppConstants.spreadsheetId,
       AppConstants.movementsRange,
       valueInputOption: 'USER_ENTERED',
+      insertDataOption: 'INSERT_ROWS',
     );
   }
 
@@ -117,7 +118,7 @@ class GoogleSheetsApi {
     );
     final rows = response.values ?? [];
     for (int i = 0; i < rows.length; i++) {
-      if (rows[i].isNotEmpty && rows[i][0].toString() == id) return i + 2;
+      if (rows[i].isNotEmpty && rows[i][0].toString().trim() == id.trim()) return i + 2;
     }
     return -1;
   }
@@ -137,6 +138,7 @@ class GoogleSheetsApi {
       AppConstants.spreadsheetId,
       AppConstants.categoriesRange,
       valueInputOption: 'USER_ENTERED',
+      insertDataOption: 'INSERT_ROWS',
     );
   }
 
@@ -174,7 +176,7 @@ class GoogleSheetsApi {
     );
     final rows = response.values ?? [];
     for (int i = 0; i < rows.length; i++) {
-      if (rows[i].isNotEmpty && rows[i][0].toString() == skuId) return i + 2;
+      if (rows[i].isNotEmpty && rows[i][0].toString().trim().toUpperCase() == skuId.trim().toUpperCase()) return i + 2;
     }
     return -1;
   }
@@ -200,6 +202,7 @@ class GoogleSheetsApi {
       AppConstants.spreadsheetId,
       AppConstants.productsRange,
       valueInputOption: 'USER_ENTERED',
+      insertDataOption: 'INSERT_ROWS',
     );
   }
 

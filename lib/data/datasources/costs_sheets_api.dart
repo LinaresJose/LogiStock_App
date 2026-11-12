@@ -96,10 +96,11 @@ class CostsSheetsApi {
       AppConstants.spreadsheetId,
       AppConstants.costHistoryRange,
       valueInputOption: 'USER_ENTERED',
+      insertDataOption: 'INSERT_ROWS',
     );
   }
 
-  /// Actualiza el campo `costoPromedio` (columna H) en la hoja Productos
+  /// Actualiza el campo `costoPromedio` (columna G) en la hoja Productos
   /// tras registrar una nueva entrada de costo.
   static Future<void> updateProductAverageCost({
     required String productName,
@@ -111,7 +112,7 @@ class CostsSheetsApi {
     await _sheetsApi!.spreadsheets.values.update(
       valueRange,
       AppConstants.spreadsheetId,
-      'Productos!H$productRowIndex',
+      'Productos!G$productRowIndex',
       valueInputOption: 'USER_ENTERED',
     );
   }
@@ -125,7 +126,7 @@ class CostsSheetsApi {
     );
     final rows = response.values ?? [];
     for (int i = 0; i < rows.length; i++) {
-      if (rows[i].isNotEmpty && rows[i][0].toString() == productName) {
+      if (rows[i].isNotEmpty && rows[i][0].toString().trim().toLowerCase() == productName.trim().toLowerCase()) {
         return i + 2;
       }
     }

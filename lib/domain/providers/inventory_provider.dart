@@ -53,11 +53,13 @@ final productsProvider = FutureProvider<List<ProductWithStock>>((ref) async {
     int totalIn = 0;
     int totalOut = 0;
 
+    final prodName = updatedProduct.name.trim().toLowerCase();
     for (var mov in movements) {
-      if (mov.productName == updatedProduct.name) {
-        if (mov.type.toLowerCase() == 'entrada') {
+      if (mov.productName.trim().toLowerCase() == prodName) {
+        final movType = mov.type.trim().toLowerCase();
+        if (movType == 'entrada') {
           totalIn += mov.quantity;
-        } else if (mov.type.toLowerCase() == 'salida') {
+        } else if (movType == 'salida') {
           totalOut += mov.quantity;
         }
       }
@@ -88,10 +90,10 @@ class InventoryController {
     final currentUser = _ref.read(currentUserProvider);
     
     // Validación de negocio: la cantidad de salida no puede ser mayor al stock disponible
-    if (movement.type.toLowerCase() == 'salida') {
+    if (movement.type.trim().toLowerCase() == 'salida') {
       final productsList = await _ref.read(productsProvider.future);
       final matchedProduct = productsList.firstWhere(
-        (p) => p.product.name == movement.productName,
+        (p) => p.product.name.trim().toLowerCase() == movement.productName.trim().toLowerCase(),
         orElse: () => throw Exception('Producto no encontrado'),
       );
       if (movement.quantity > matchedProduct.currentStock) {
