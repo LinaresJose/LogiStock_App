@@ -26,28 +26,39 @@ class DashboardScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 70,
+        toolbarHeight: 65,
+        titleSpacing: 12,
         title: Row(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(Icons.inventory_2_rounded, size: 30, color: Colors.white),
-            const SizedBox(width: 15),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text('LogiStock',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
-                Text(
-                  currentUser?.nombre ?? 'Inventario',
-                  style: const TextStyle(fontSize: 11, color: Colors.white70),
-                ),
-              ],
+            const Icon(Icons.inventory_2_rounded, size: 26, color: Colors.white),
+            const SizedBox(width: 10),
+            Flexible(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'LogiStock',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  Text(
+                    currentUser?.nombre ?? 'Inventario',
+                    style: const TextStyle(fontSize: 11, color: Colors.white70),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
             ),
           ],
         ),
         actions: [
           // ── Botón Compartir App ───────────────────────────────────────────
           IconButton(
-            icon: const Icon(Icons.share, color: Colors.white),
+            visualDensity: VisualDensity.compact,
+            padding: const EdgeInsets.symmetric(horizontal: 4),
+            icon: const Icon(Icons.share, color: Colors.white, size: 22),
             tooltip: 'Compartir App',
             onPressed: () async {
               try {
@@ -72,7 +83,9 @@ class DashboardScreen extends ConsumerWidget {
           PermissionGuard(
             check: (p) => p.canManageUsers,
             child: IconButton(
-              icon: const Icon(Icons.manage_accounts_rounded, color: Colors.white),
+              visualDensity: VisualDensity.compact,
+              padding: const EdgeInsets.symmetric(horizontal: 4),
+              icon: const Icon(Icons.manage_accounts_rounded, color: Colors.white, size: 22),
               tooltip: 'Gestión de Usuarios',
               onPressed: () => Navigator.push(
                 context,
@@ -80,10 +93,10 @@ class DashboardScreen extends ConsumerWidget {
               ),
             ),
           ),
-          // ── Chip de rol ───────────────────────────────────────────────────
-          if (currentUser != null)
+          // ── Chip de rol (solo en pantallas anchas >= 500 para evitar saturar teléfonos) ──
+          if (currentUser != null && MediaQuery.of(context).size.width >= 500)
             Padding(
-              padding: const EdgeInsets.only(right: 4),
+              padding: const EdgeInsets.symmetric(horizontal: 6),
               child: Center(
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
@@ -100,7 +113,9 @@ class DashboardScreen extends ConsumerWidget {
             ),
           // ── Logout ────────────────────────────────────────────────────────
           IconButton(
-            icon: const Icon(Icons.logout, color: Colors.white),
+            visualDensity: VisualDensity.compact,
+            padding: const EdgeInsets.symmetric(horizontal: 6),
+            icon: const Icon(Icons.logout, color: Colors.white, size: 22),
             tooltip: 'Cerrar sesión',
             onPressed: () async {
               final confirmed = await showDialog<bool>(
