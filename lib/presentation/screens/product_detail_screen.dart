@@ -78,9 +78,8 @@ class ProductDetailScreen extends ConsumerWidget {
           Expanded(
             child: movementsAsync.when(
               data: (movements) {
-                final productMovements = movements.where((m) => m.productName == product.name).toList();
+                final productMovements = movements.where((m) => m.productName.trim().toLowerCase() == product.name.trim().toLowerCase()).toList();
 
-                
                 if (productMovements.isEmpty) {
                   return const Center(child: Text('No hay movimientos registrados.'));
                 }
@@ -94,19 +93,64 @@ class ProductDetailScreen extends ConsumerWidget {
                     final isEntrada = mov.type.toLowerCase() == 'entrada';
                     
                     return Card(
-                      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
                       elevation: 0,
                       color: Colors.grey.shade50,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        side: BorderSide(color: Colors.grey.shade200),
+                      ),
                       child: ListTile(
                         leading: CircleAvatar(
                           backgroundColor: isEntrada ? Colors.green.shade100 : Colors.red.shade100,
                           child: Icon(
-                            isEntrada ? Icons.add : Icons.remove,
+                            isEntrada ? Icons.arrow_downward : Icons.arrow_upward,
                             color: isEntrada ? Colors.green.shade900 : Colors.red.shade900,
                           ),
                         ),
-                        title: Text('${mov.type} - Cantidad: ${mov.quantity}'),
-                        subtitle: Text('Fecha: ${mov.date}'),
+                        title: Text(
+                          '${mov.type} - Cantidad: ${mov.quantity}',
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(height: 4),
+                            Text(
+                              'Fecha: ${mov.date}${mov.usuarioNombre.isNotEmpty ? " • Por: ${mov.usuarioNombre}" : ""}',
+                              style: TextStyle(fontSize: 12, color: Colors.grey.shade700),
+                            ),
+                            if (mov.observation.isNotEmpty) ...[
+                              const SizedBox(height: 6),
+                              Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                                decoration: BoxDecoration(
+                                  color: Colors.amber.shade50,
+                                  borderRadius: BorderRadius.circular(8),
+                                  border: Border.all(color: Colors.amber.shade200),
+                                ),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Icon(Icons.comment_outlined, size: 14, color: Colors.amber.shade900),
+                                    const SizedBox(width: 6),
+                                    Expanded(
+                                      child: Text(
+                                        mov.observation,
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: Colors.brown.shade900,
+                                          fontStyle: FontStyle.italic,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ],
+                        ),
+                        isThreeLine: mov.observation.isNotEmpty,
                       ),
                     );
                   },

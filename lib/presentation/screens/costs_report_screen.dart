@@ -93,8 +93,31 @@ class CostsReportScreen extends ConsumerWidget {
                       ),
                       if (cost.observacion.isNotEmpty) ...[
                         const SizedBox(height: 8),
-                        Text('Obs: ${cost.observacion}',
-                            style: TextStyle(fontStyle: FontStyle.italic, color: Colors.grey.shade700, fontSize: 12)),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                          decoration: BoxDecoration(
+                            color: Colors.amber.shade50,
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(color: Colors.amber.shade200),
+                          ),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Icon(Icons.comment_outlined, size: 14, color: Colors.amber.shade900),
+                              const SizedBox(width: 6),
+                              Expanded(
+                                child: Text(
+                                  cost.observacion,
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.brown.shade900,
+                                    fontStyle: FontStyle.italic,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ]
                     ],
                   ),
